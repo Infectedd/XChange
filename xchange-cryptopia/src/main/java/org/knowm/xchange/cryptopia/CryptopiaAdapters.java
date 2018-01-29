@@ -130,7 +130,7 @@ public final class CryptopiaAdapters {
     Map<Currency, CurrencyMetaData> currencyMetaDataMap = new HashMap<>();
 
     for (CryptopiaCurrency cryptopiaCurrency : cryptopiaCurrencies) {
-      currencyMetaDataMap.put(Currency.getInstance(cryptopiaCurrency.getSymbol()), new CurrencyMetaData(8, null));
+      currencyMetaDataMap.put(Currency.getInstance(cryptopiaCurrency.getSymbol()), new CurrencyMetaData(8, cryptopiaCurrency.getWithdrawFee()));
     }
 
     for (CryptopiaTradePair cryptopiaTradePair : tradePairs) {
