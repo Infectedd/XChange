@@ -135,7 +135,10 @@ public final class CryptopiaAdapters {
 
     for (CryptopiaTradePair cryptopiaTradePair : tradePairs) {
       if(!cryptopiaTradePair.getStatus().equals("OK")) continue;
-      CurrencyPair currencyPair = CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaTradePair.getLabel());
+      
+      CurrencyPair wrongCurrencyPair = CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaTradePair.getLabel());
+      
+      CurrencyPair currencyPair = new CurrencyPair(wrongCurrencyPair.counter,wrongCurrencyPair.base);
       CurrencyPairMetaData currencyPairMetaData = new CurrencyPairMetaData(cryptopiaTradePair.getTradeFee(), cryptopiaTradePair.getMinimumTrade(), cryptopiaTradePair.getMaximumTrade(), 8);
 
       marketMetaDataMap.put(currencyPair, currencyPairMetaData);
