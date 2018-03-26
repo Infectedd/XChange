@@ -15,6 +15,7 @@ import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.gatecoin.GatecoinAdapters;
@@ -51,8 +52,7 @@ public class GatecoinTradeService extends GatecoinTradeServiceRaw implements Tra
   }
 
   @Override
-  public OpenOrders getOpenOrders(
-      OpenOrdersParams params) throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
     GatecoinOrderResult openOrdersResult = getGatecoinOpenOrders();
 
     List<LimitOrder> limitOrders = new ArrayList<>();
@@ -93,6 +93,11 @@ public class GatecoinTradeService extends GatecoinTradeServiceRaw implements Tra
       gatecoinOrderResult = placeGatecoinOrder(limitOrder.getOriginalAmount(), limitOrder.getLimitPrice(), "ASK", ccyPair);
     }
     return gatecoinOrderResult.getOrderId();
+  }
+
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
   }
 
   @Override
@@ -153,8 +158,7 @@ public class GatecoinTradeService extends GatecoinTradeServiceRaw implements Tra
   }
 
   @Override
-  public Collection<Order> getOrder(
-      String... orderIds) throws IOException {
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
     throw new NotYetImplementedForExchangeException();
   }
 
@@ -172,17 +176,13 @@ public class GatecoinTradeService extends GatecoinTradeServiceRaw implements Tra
     }
 
     @Override
-    public void setPageLength(Integer pageLength) {
-      this.pageLength = pageLength;
-    }
-
-    @Override
     public Integer getPageLength() {
       return pageLength;
     }
 
     @Override
-    public void setPageNumber(Integer pageNumber) {
+    public void setPageLength(Integer pageLength) {
+      this.pageLength = pageLength;
     }
 
     @Override
@@ -191,13 +191,17 @@ public class GatecoinTradeService extends GatecoinTradeServiceRaw implements Tra
     }
 
     @Override
-    public void setTransactionId(String txId) {
-      transactionId = txId;
+    public void setPageNumber(Integer pageNumber) {
     }
 
     @Override
     public String getTransactionId() {
       return transactionId;
+    }
+
+    @Override
+    public void setTransactionId(String txId) {
+      transactionId = txId;
     }
 
   }

@@ -78,6 +78,8 @@ public class DateUtils {
   public static Date fromISO8601DateString(String iso8601FormattedDate) throws com.fasterxml.jackson.databind.exc.InvalidFormatException {
 
     SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    // set UTC time zone 
+    iso8601Format.setTimeZone(TimeZone.getTimeZone("UTC"));
     try {
       return iso8601Format.parse(iso8601FormattedDate);
     } catch (ParseException e) {
@@ -92,7 +94,8 @@ public class DateUtils {
    * @return Date
    * @throws com.fasterxml.jackson.databind.exc.InvalidFormatException
    */
-  public static Date fromRfc1123DateString(String rfc1123FormattedDate, Locale locale) throws com.fasterxml.jackson.databind.exc.InvalidFormatException {
+  public static Date fromRfc1123DateString(String rfc1123FormattedDate, Locale locale)
+      throws com.fasterxml.jackson.databind.exc.InvalidFormatException {
 
     SimpleDateFormat rfc1123DateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", locale);
     try {

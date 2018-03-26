@@ -1,7 +1,6 @@
 package org.knowm.xchange.dsx.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -24,6 +23,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
@@ -55,14 +55,27 @@ public class DSXTradeService extends DSXTradeServiceRaw implements TradeService 
     super(exchange);
   }
 
+  private static Long nullSafeToLong(String str) {
+
+    try {
+      return (str == null || str.isEmpty()) ? null : Long.valueOf(str);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  private static Long nullSafeUnixTime(Date time) {
+
+    return time != null ? DateUtils.toUnixTime(time) : null;
+  }
+
   @Override
   public OpenOrders getOpenOrders() throws IOException {
     return getOpenOrders(createOpenOrdersParams());
   }
 
   @Override
-  public OpenOrders getOpenOrders(OpenOrdersParams params)
-      throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
 
     Map<Long, DSXOrder> orders = getDSXActiveOrders(null);
     return DSXAdapters.adaptOrders(orders);
@@ -83,11 +96,16 @@ public class DSXTradeService extends DSXTradeServiceRaw implements TradeService 
 
     String pair = DSXAdapters.getPair(limitOrder.getCurrencyPair());
 
-    DSXOrder dsxOrder = new DSXOrder(pair, type, limitOrder.getOriginalAmount(), limitOrder.getOriginalAmount(), limitOrder.getLimitPrice(),
-        3, DSXOrder.OrderType.limit, null);
+    DSXOrder dsxOrder = new DSXOrder(pair, type, limitOrder.getOriginalAmount(), limitOrder.getOriginalAmount(), limitOrder.getLimitPrice(), 3,
+        DSXOrder.OrderType.limit, null);
 
     DSXTradeResult result = tradeDSX(dsxOrder);
     return Long.toString(result.getOrderId());
+  }
+
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
   }
 
   @Override
@@ -158,20 +176,6 @@ public class DSXTradeService extends DSXTradeServiceRaw implements TradeService 
     return DSXAdapters.adaptTradeHistory(resultMap);
   }
 
-  private static Long nullSafeToLong(String str) {
-
-    try {
-      return (str == null || str.isEmpty()) ? null : Long.valueOf(str);
-    } catch (NumberFormatException e) {
-      return null;
-    }
-  }
-
-  private static Long nullSafeUnixTime(Date time) {
-
-    return time != null ? DateUtils.toUnixTime(time) : null;
-  }
-
   @Override
   public TradeHistoryParams createTradeHistoryParams() {
 
@@ -198,7 +202,9 @@ public class DSXTradeService extends DSXTradeServiceRaw implements TradeService 
     Long startTime = nullSafeUnixTime(params.getStartTime());
     Long endTime = nullSafeUnixTime(params.getEndTime());
 
-    DSXAuthenticatedV2.SortOrder sort = params.getOrder().equals(TradeHistoryParamsSorted.Order.desc) ? DSXAuthenticatedV2.SortOrder.DESC : DSXAuthenticatedV2.SortOrder.ASC;
+    DSXAuthenticatedV2.SortOrder sort = params.getOrder().equals(TradeHistoryParamsSorted.Order.desc) ?
+        DSXAuthenticatedV2.SortOrder.DESC :
+        DSXAuthenticatedV2.SortOrder.ASC;
     DSXTransHistoryResult.Status status = params.getStatus();
     DSXTransHistoryResult.Type type = params.getType();
 

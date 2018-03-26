@@ -10,34 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-                       "alertOnLiquidations",
-                       "animationsEnabled",
-                       "announcementsLastSeen",
-                       "chatChannelID",
-                       "colorTheme",
-                       "currency",
-                       "debug",
-                       "disableEmails",
-                       "hideConfirmDialogs",
-                       "hideConnectionModal",
-                       "hideFromLeaderboard",
-                       "hideNameFromLeaderboard",
-                       "hideNotifications",
-                       "locale",
-                       "msgsSeen",
-                       "orderBookBinning",
-                       "orderBookType",
-                       "orderClearImmediate",
-                       "orderControlsPlusMinus",
-                       "showLocaleNumbers",
-                       "sounds",
-                       "strictIPCheck",
-                       "strictTimeout",
-                       "tickerGroup",
-                       "tickerPinned",
-                       "tradeLayout"
-                   })
+@JsonPropertyOrder({"alertOnLiquidations", "animationsEnabled", "announcementsLastSeen", "chatChannelID", "colorTheme", "currency", "debug",
+    "disableEmails", "hideConfirmDialogs", "hideConnectionModal", "hideFromLeaderboard", "hideNameFromLeaderboard", "hideNotifications", "locale",
+    "msgsSeen", "orderBookBinning", "orderBookType", "orderClearImmediate", "orderControlsPlusMinus", "showLocaleNumbers", "sounds", "strictIPCheck",
+    "strictTimeout", "tickerGroup", "tickerPinned", "tradeLayout"})
 public final class BitmexAccountPreferences {
 
   @JsonProperty("alertOnLiquidations")
@@ -201,37 +177,5 @@ public final class BitmexAccountPreferences {
 
   public Map<String, Object> getAdditionalProperties() {
     return additionalProperties;
-  }
-
-  @Override
-  public String toString() {
-    return "BitmexAccountPreferences{" +
-        "alertOnLiquidations=" + alertOnLiquidations +
-        ", animationsEnabled=" + animationsEnabled +
-        ", announcementsLastSeen='" + announcementsLastSeen + '\'' +
-        ", chatChannelID=" + chatChannelID +
-        ", colorTheme='" + colorTheme + '\'' +
-        ", currency='" + currency + '\'' +
-        ", debug=" + debug +
-        ", disableEmails=" + disableEmails +
-        ", hideConfirmDialogs=" + hideConfirmDialogs +
-        ", hideConnectionModal=" + hideConnectionModal +
-        ", hideFromLeaderboard=" + hideFromLeaderboard +
-        ", hideNameFromLeaderboard=" + hideNameFromLeaderboard +
-        ", hideNotifications=" + hideNotifications +
-        ", locale='" + locale + '\'' +
-        ", msgsSeen=" + msgsSeen +
-        ", orderBookBinning=" + orderBookBinning +
-        ", orderBookType='" + orderBookType + '\'' +
-        ", orderClearImmediate=" + orderClearImmediate +
-        ", orderControlsPlusMinus=" + orderControlsPlusMinus +
-        ", showLocaleNumbers=" + showLocaleNumbers +
-        ", sounds=" + sounds +
-        ", strictIPCheck=" + strictIPCheck +
-        ", strictTimeout=" + strictTimeout +
-        ", tickerGroup='" + tickerGroup + '\'' +
-        ", tickerPinned=" + tickerPinned +
-        ", tradeLayout='" + tradeLayout + '\'' +
-        '}';
   }
 }

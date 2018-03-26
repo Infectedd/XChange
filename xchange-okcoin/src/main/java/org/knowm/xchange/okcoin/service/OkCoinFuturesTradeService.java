@@ -16,8 +16,10 @@ import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.okcoin.FuturesContract;
 import org.knowm.xchange.okcoin.OkCoinAdapters;
 import org.knowm.xchange.okcoin.OkCoinUtils;
@@ -38,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 public class OkCoinFuturesTradeService extends OkCoinTradeServiceRaw implements TradeService {
 
-  private static final OpenOrders noOpenOrders = new OpenOrders(Collections.<LimitOrder> emptyList());
+  private static final OpenOrders noOpenOrders = new OpenOrders(Collections.<LimitOrder>emptyList());
   private final Logger log = LoggerFactory.getLogger(OkCoinFuturesTradeService.class);
 
   private final int leverRate;
@@ -47,7 +49,7 @@ public class OkCoinFuturesTradeService extends OkCoinTradeServiceRaw implements 
 
   /**
    * Constructor
-   * 
+   *
    * @param exchange
    */
   public OkCoinFuturesTradeService(Exchange exchange, FuturesContract futuresContract, int leverRate) {
@@ -131,6 +133,11 @@ public class OkCoinFuturesTradeService extends OkCoinTradeServiceRaw implements 
     } else {
       return liquidateLimitOrder(limitOrder);
     }
+  }
+
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
   }
 
   /**
@@ -219,65 +226,6 @@ public class OkCoinFuturesTradeService extends OkCoinTradeServiceRaw implements 
     return null;
   }
 
-  // TODO if Futures ever get a generic interface, move this interface to xchange-core
-  public interface TradeHistoryParamFuturesContract extends TradeHistoryParams {
-    FuturesContract getFuturesContract();
-
-    void setFuturesContract(FuturesContract futuresContract);
-
-    String getOrderId();
-
-    void setOrderId(String orderId);
-  }
-
-  final public static class OkCoinFuturesTradeHistoryParams extends DefaultTradeHistoryParamPaging implements TradeHistoryParamCurrencyPair,
-      TradeHistoryParamFuturesContract {
-    private CurrencyPair currencyPair;
-    private FuturesContract futuresContract;
-    private String orderId;
-
-    public OkCoinFuturesTradeHistoryParams() {
-    }
-
-    public OkCoinFuturesTradeHistoryParams(Integer pageLength, Integer pageNumber, CurrencyPair currencyPair, FuturesContract futuresContract,
-        String orderId) {
-      super(pageLength, pageNumber);
-      this.currencyPair = currencyPair;
-      this.futuresContract = futuresContract;
-      this.orderId = orderId;
-    }
-
-    @Override
-    public void setCurrencyPair(CurrencyPair pair) {
-      this.currencyPair = pair;
-    }
-
-    @Override
-    public CurrencyPair getCurrencyPair() {
-      return currencyPair;
-    }
-
-    @Override
-    public FuturesContract getFuturesContract() {
-      return futuresContract;
-    }
-
-    @Override
-    public void setFuturesContract(FuturesContract futuresContract) {
-      this.futuresContract = futuresContract;
-    }
-
-    @Override
-    public String getOrderId() {
-      return orderId;
-    }
-
-    @Override
-    public void setOrderId(String orderId) {
-      this.orderId = orderId;
-    }
-  }
-
   @Override
   public Collection<Order> getOrder(String... orderIds) throws IOException {
     List<CurrencyPair> exchangeSymbols = exchange.getExchangeSymbols();
@@ -323,6 +271,65 @@ public class OkCoinFuturesTradeService extends OkCoinTradeServiceRaw implements 
       }
     }
     return openOrders;
+  }
+
+  // TODO if Futures ever get a generic interface, move this interface to xchange-core
+  public interface TradeHistoryParamFuturesContract extends TradeHistoryParams {
+    FuturesContract getFuturesContract();
+
+    void setFuturesContract(FuturesContract futuresContract);
+
+    String getOrderId();
+
+    void setOrderId(String orderId);
+  }
+
+  final public static class OkCoinFuturesTradeHistoryParams extends DefaultTradeHistoryParamPaging
+      implements TradeHistoryParamCurrencyPair, TradeHistoryParamFuturesContract {
+    private CurrencyPair currencyPair;
+    private FuturesContract futuresContract;
+    private String orderId;
+
+    public OkCoinFuturesTradeHistoryParams() {
+    }
+
+    public OkCoinFuturesTradeHistoryParams(Integer pageLength, Integer pageNumber, CurrencyPair currencyPair, FuturesContract futuresContract,
+        String orderId) {
+      super(pageLength, pageNumber);
+      this.currencyPair = currencyPair;
+      this.futuresContract = futuresContract;
+      this.orderId = orderId;
+    }
+
+    @Override
+    public CurrencyPair getCurrencyPair() {
+      return currencyPair;
+    }
+
+    @Override
+    public void setCurrencyPair(CurrencyPair pair) {
+      this.currencyPair = pair;
+    }
+
+    @Override
+    public FuturesContract getFuturesContract() {
+      return futuresContract;
+    }
+
+    @Override
+    public void setFuturesContract(FuturesContract futuresContract) {
+      this.futuresContract = futuresContract;
+    }
+
+    @Override
+    public String getOrderId() {
+      return orderId;
+    }
+
+    @Override
+    public void setOrderId(String orderId) {
+      this.orderId = orderId;
+    }
   }
 
 }

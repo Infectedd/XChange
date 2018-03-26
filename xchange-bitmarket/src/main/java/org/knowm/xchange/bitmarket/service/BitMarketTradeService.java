@@ -13,6 +13,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
@@ -41,30 +42,31 @@ public class BitMarketTradeService extends BitMarketTradeServiceRaw implements T
   }
 
   @Override
-  public OpenOrders getOpenOrders(
-      OpenOrdersParams params) throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
     BitMarketOrdersResponse response = getBitMarketOpenOrders();
     return BitMarketAdapters.adaptOpenOrders(response.getData());
   }
 
   @Override
-  public String placeMarketOrder(
-      MarketOrder marketOrder) throws IOException {
+  public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
 
     throw new NotAvailableFromExchangeException();
   }
 
   @Override
-  public String placeLimitOrder(
-      LimitOrder limitOrder) throws IOException {
+  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
 
     BitMarketTradeResponse response = placeBitMarketOrder(limitOrder);
     return String.valueOf(response.getData().getId());
   }
 
   @Override
-  public boolean cancelOrder(
-      String id) throws IOException {
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
+  }
+
+  @Override
+  public boolean cancelOrder(String id) throws IOException {
 
     cancelBitMarketOrder(id);
     return true;
@@ -99,8 +101,7 @@ public class BitMarketTradeService extends BitMarketTradeServiceRaw implements T
   }
 
   @Override
-  public Collection<Order> getOrder(
-      String... orderIds) throws IOException {
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
     throw new NotYetImplementedForExchangeException();
   }
 

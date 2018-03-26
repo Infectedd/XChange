@@ -9,6 +9,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
@@ -40,8 +41,7 @@ public class CryptoFacilitiesTradeService extends CryptoFacilitiesTradeServiceRa
   }
 
   @Override
-  public OpenOrders getOpenOrders(
-      OpenOrdersParams params) throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
     return CryptoFacilitiesAdapters.adaptOpenOrders(super.getCryptoFacilitiesOpenOrders());
   }
 
@@ -56,6 +56,11 @@ public class CryptoFacilitiesTradeService extends CryptoFacilitiesTradeServiceRa
   public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
 
     return CryptoFacilitiesAdapters.adaptOrderId(super.sendCryptoFacilitiesLimitOrder(limitOrder));
+  }
+
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
   }
 
   @Override
@@ -91,8 +96,7 @@ public class CryptoFacilitiesTradeService extends CryptoFacilitiesTradeServiceRa
   }
 
   @Override
-  public Collection<Order> getOrder(
-      String... orderIds) throws IOException {
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
     throw new NotYetImplementedForExchangeException();
   }
 

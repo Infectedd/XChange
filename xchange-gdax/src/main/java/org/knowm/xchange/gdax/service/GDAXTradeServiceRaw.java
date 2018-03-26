@@ -7,6 +7,7 @@ import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.gdax.dto.GDAXException;
 import org.knowm.xchange.gdax.dto.trade.GDAXFill;
 import org.knowm.xchange.gdax.dto.trade.GDAXIdResponse;
@@ -28,10 +29,18 @@ public class GDAXTradeServiceRaw extends GDAXBaseService {
     this.nonceFactory = exchange.getNonceFactory();
   }
 
+  private static String side(OrderType type) {
+    return type.equals(OrderType.BID) ? "buy" : "sell";
+  }
+
+  private static String toProductId(CurrencyPair currencyPair) {
+    return currencyPair.base.getCurrencyCode() + "-" + currencyPair.counter.getCurrencyCode();
+  }
+
   public GDAXOrder[] getGDAXOpenOrders() throws IOException {
 
     try {
-      return gdax.getListOrders(apiKey, digest, nonceFactory, passphrase, "open");
+      return gdax.getListOrders(apiKey, digest, nonceFactory, passphrase);
     } catch (GDAXException e) {
       throw handleError(e);
     }
@@ -74,7 +83,8 @@ public class GDAXTradeServiceRaw extends GDAXBaseService {
     String productId = toProductId(limitOrder.getCurrencyPair());
 
     try {
-      return gdax.placeLimitOrder(new GDAXPlaceOrder(limitOrder.getOriginalAmount(), limitOrder.getLimitPrice(), side, productId, "limit", limitOrder.getOrderFlags()),
+      return gdax.placeLimitOrder(
+          new GDAXPlaceOrder(limitOrder.getOriginalAmount(), limitOrder.getLimitPrice(), side, productId, "limit", limitOrder.getOrderFlags()),
           apiKey, digest, nonceFactory, passphrase);
     } catch (GDAXException e) {
       throw handleError(e);
@@ -87,9 +97,23 @@ public class GDAXTradeServiceRaw extends GDAXBaseService {
     String productId = toProductId(marketOrder.getCurrencyPair());
 
     try {
-      return gdax.placeMarketOrder(new GDAXPlaceOrder(marketOrder.getOriginalAmount(), null, side, productId, "market", marketOrder.getOrderFlags
-              ()), apiKey, digest,
-          nonceFactory, passphrase);
+      return gdax
+          .placeMarketOrder(new GDAXPlaceOrder(marketOrder.getOriginalAmount(), null, side, productId, "market", marketOrder.getOrderFlags()), apiKey,
+              digest, nonceFactory, passphrase);
+    } catch (GDAXException e) {
+      throw handleError(e);
+    }
+  }
+
+  public GDAXIdResponse placeGDAXStopOrder(StopOrder stopOrder) throws IOException {
+
+    String side = side(stopOrder.getType());
+    String productId = toProductId(stopOrder.getCurrencyPair());
+
+    try {
+      return gdax.placeStopOrder(
+          new GDAXPlaceOrder(stopOrder.getOriginalAmount(), stopOrder.getAveragePrice(), side, productId, "stop", stopOrder.getOrderFlags()), apiKey,
+          digest, nonceFactory, passphrase);
     } catch (GDAXException e) {
       throw handleError(e);
     }
@@ -114,14 +138,6 @@ public class GDAXTradeServiceRaw extends GDAXBaseService {
     }
   }
 
-  private static String side(OrderType type) {
-    return type.equals(OrderType.BID) ? "buy" : "sell";
-  }
-
-  private static String toProductId(CurrencyPair currencyPair) {
-    return currencyPair.base.getCurrencyCode() + "-" + currencyPair.counter.getCurrencyCode();
-  }
-
   public static class GdaxTradeHistoryParams implements TradeHistoryParamTransactionId, TradeHistoryParamCurrencyPair {
 
     private CurrencyPair currencyPair;
@@ -137,23 +153,23 @@ public class GDAXTradeServiceRaw extends GDAXBaseService {
     }
 
     @Override
-    public void setCurrencyPair(CurrencyPair currencyPair) {
-      this.currencyPair = currencyPair;
-    }
-
-    @Override
     public CurrencyPair getCurrencyPair() {
       return currencyPair;
     }
 
     @Override
-    public void setTransactionId(String txId) {
-      this.txId = txId;
+    public void setCurrencyPair(CurrencyPair currencyPair) {
+      this.currencyPair = currencyPair;
     }
 
     @Override
     public String getTransactionId() {
       return txId;
+    }
+
+    @Override
+    public void setTransactionId(String txId) {
+      this.txId = txId;
     }
   }
 }

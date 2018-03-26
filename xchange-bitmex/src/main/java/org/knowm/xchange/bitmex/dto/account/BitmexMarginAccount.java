@@ -10,49 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-                       "account",
-                       "currency",
-                       "riskLimit",
-                       "prevState",
-                       "state",
-                       "action",
-                       "amount",
-                       "pendingCredit",
-                       "pendingDebit",
-                       "confirmedDebit",
-                       "prevRealisedPnl",
-                       "prevUnrealisedPnl",
-                       "grossComm",
-                       "grossOpenCost",
-                       "grossOpenPremium",
-                       "grossExecCost",
-                       "grossMarkValue",
-                       "riskValue",
-                       "taxableMargin",
-                       "initMargin",
-                       "maintMargin",
-                       "sessionMargin",
-                       "targetExcessMargin",
-                       "varMargin",
-                       "realisedPnl",
-                       "unrealisedPnl",
-                       "indicativeTax",
-                       "unrealisedProfit",
-                       "syntheticMargin",
-                       "walletBalance",
-                       "marginBalance",
-                       "marginBalancePcnt",
-                       "marginLeverage",
-                       "marginUsedPcnt",
-                       "excessMargin",
-                       "excessMarginPcnt",
-                       "availableMargin",
-                       "withdrawableMargin",
-                       "timestamp",
-                       "grossLastValue",
-                       "commission"
-                   })
+@JsonPropertyOrder({"account", "currency", "riskLimit", "prevState", "state", "action", "amount", "pendingCredit", "pendingDebit", "confirmedDebit",
+    "prevRealisedPnl", "prevUnrealisedPnl", "grossComm", "grossOpenCost", "grossOpenPremium", "grossExecCost", "grossMarkValue", "riskValue",
+    "taxableMargin", "initMargin", "maintMargin", "sessionMargin", "targetExcessMargin", "varMargin", "realisedPnl", "unrealisedPnl", "indicativeTax",
+    "unrealisedProfit", "syntheticMargin", "walletBalance", "marginBalance", "marginBalancePcnt", "marginLeverage", "marginUsedPcnt", "excessMargin",
+    "excessMarginPcnt", "availableMargin", "withdrawableMargin", "timestamp", "grossLastValue", "commission"})
 public final class BitmexMarginAccount {
 
   @JsonProperty("account")
@@ -306,52 +268,5 @@ public final class BitmexMarginAccount {
 
   public Map<String, Object> getAdditionalProperties() {
     return additionalProperties;
-  }
-
-  @Override
-  public String toString() {
-    return "BitmexMarginAccount{" +
-        "account=" + account +
-        ", currency='" + currency + '\'' +
-        ", riskLimit=" + riskLimit +
-        ", prevState='" + prevState + '\'' +
-        ", state='" + state + '\'' +
-        ", action='" + action + '\'' +
-        ", amount=" + amount +
-        ", pendingCredit=" + pendingCredit +
-        ", pendingDebit=" + pendingDebit +
-        ", confirmedDebit=" + confirmedDebit +
-        ", prevRealisedPnl=" + prevRealisedPnl +
-        ", prevUnrealisedPnl=" + prevUnrealisedPnl +
-        ", grossComm=" + grossComm +
-        ", grossOpenCost=" + grossOpenCost +
-        ", grossOpenPremium=" + grossOpenPremium +
-        ", grossExecCost=" + grossExecCost +
-        ", grossMarkValue=" + grossMarkValue +
-        ", riskValue=" + riskValue +
-        ", taxableMargin=" + taxableMargin +
-        ", initMargin=" + initMargin +
-        ", maintMargin=" + maintMargin +
-        ", sessionMargin=" + sessionMargin +
-        ", targetExcessMargin=" + targetExcessMargin +
-        ", varMargin=" + varMargin +
-        ", realisedPnl=" + realisedPnl +
-        ", unrealisedPnl=" + unrealisedPnl +
-        ", indicativeTax=" + indicativeTax +
-        ", unrealisedProfit=" + unrealisedProfit +
-        ", syntheticMargin=" + syntheticMargin +
-        ", walletBalance=" + walletBalance +
-        ", marginBalance=" + marginBalance +
-        ", marginBalancePcnt=" + marginBalancePcnt +
-        ", marginLeverage=" + marginLeverage +
-        ", marginUsedPcnt=" + marginUsedPcnt +
-        ", excessMargin=" + excessMargin +
-        ", excessMarginPcnt=" + excessMarginPcnt +
-        ", availableMargin=" + availableMargin +
-        ", withdrawableMargin=" + withdrawableMargin +
-        ", timestamp='" + timestamp + '\'' +
-        ", grossLastValue=" + grossLastValue +
-        ", commission=" + commission +
-        '}';
   }
 }

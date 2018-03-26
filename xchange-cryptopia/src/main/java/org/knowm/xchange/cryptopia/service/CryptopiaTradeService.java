@@ -59,6 +59,11 @@ public class CryptopiaTradeService extends CryptopiaTradeServiceRaw implements T
   }
 
   @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
+  }
+
+  @Override
   public boolean cancelOrder(String orderId) throws IOException {
     return cancel(orderId);
   }
@@ -128,23 +133,23 @@ public class CryptopiaTradeService extends CryptopiaTradeServiceRaw implements T
     }
 
     @Override
-    public void setCurrencyPair(CurrencyPair currencyPair) {
-      this.currencyPair = currencyPair;
-    }
-
-    @Override
     public CurrencyPair getCurrencyPair() {
       return currencyPair;
     }
 
     @Override
-    public void setLimit(Integer limit) {
-      this.limit = limit;
+    public void setCurrencyPair(CurrencyPair currencyPair) {
+      this.currencyPair = currencyPair;
     }
 
     @Override
     public Integer getLimit() {
       return limit;
+    }
+
+    @Override
+    public void setLimit(Integer limit) {
+      this.limit = limit;
     }
   }
 }

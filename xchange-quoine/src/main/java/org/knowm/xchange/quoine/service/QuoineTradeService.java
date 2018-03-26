@@ -12,6 +12,7 @@ import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
@@ -47,8 +48,7 @@ public class QuoineTradeService extends QuoineTradeServiceRaw implements TradeSe
   }
 
   @Override
-  public OpenOrders getOpenOrders(
-      OpenOrdersParams params) throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
     QuoineOrdersList quoineOrdersList = listQuoineOrders();
     return QuoineAdapters.adapteOpenOrders(quoineOrdersList);
   }
@@ -67,6 +67,11 @@ public class QuoineTradeService extends QuoineTradeServiceRaw implements TradeSe
     QuoineOrderResponse quoinePlaceOrderResponse = placeLimitOrder(limitOrder.getCurrencyPair(),
         limitOrder.getType() == OrderType.ASK ? "sell" : "buy", limitOrder.getOriginalAmount(), limitOrder.getLimitPrice());
     return quoinePlaceOrderResponse.getId();
+  }
+
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
   }
 
   @Override
@@ -111,8 +116,7 @@ public class QuoineTradeService extends QuoineTradeServiceRaw implements TradeSe
   }
 
   @Override
-  public Collection<Order> getOrder(
-      String... orderIds) throws IOException {
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
     throw new NotYetImplementedForExchangeException();
   }
 

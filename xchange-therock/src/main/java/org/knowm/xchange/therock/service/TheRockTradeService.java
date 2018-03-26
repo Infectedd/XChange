@@ -10,6 +10,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
+import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
@@ -54,6 +55,11 @@ public class TheRockTradeService extends TheRockTradeServiceRaw implements Trade
     return placedOrder.getId().toString();
   }
 
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotYetImplementedForExchangeException();
+  }
+
   /**
    * Not available from exchange since TheRock needs currency pair in order to return open orders
    */
@@ -63,8 +69,7 @@ public class TheRockTradeService extends TheRockTradeServiceRaw implements Trade
   }
 
   @Override
-  public OpenOrders getOpenOrders(
-      OpenOrdersParams params) throws IOException {
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
     CurrencyPair currencyPair = null;
 
     if (params instanceof OpenOrdersParamCurrencyPair) {
@@ -92,8 +97,7 @@ public class TheRockTradeService extends TheRockTradeServiceRaw implements Trade
   }
 
   @Override
-  public boolean cancelOrder(
-      CancelOrderParams params) throws IOException {
+  public boolean cancelOrder(CancelOrderParams params) throws IOException {
     if (!(params instanceof CancelOrderByIdParams)) {
       return false;
     }
@@ -119,8 +123,7 @@ public class TheRockTradeService extends TheRockTradeServiceRaw implements Trade
    * Not available from exchange since TheRock needs currency pair in order to return/show the order
    */
   @Override
-  public Collection<Order> getOrder(
-      String... orderIds) throws IOException {
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
     throw new NotAvailableFromExchangeException();
   }
 

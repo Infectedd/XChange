@@ -10,20 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-                       "transactID",
-                       "account",
-                       "currency",
-                       "transactType",
-                       "amount",
-                       "fee",
-                       "transactStatus",
-                       "address",
-                       "tx",
-                       "text",
-                       "transactTime",
-                       "timestamp"
-                   })
+@JsonPropertyOrder({"transactID", "account", "currency", "transactType", "amount", "fee", "transactStatus", "address", "tx", "text", "transactTime",
+    "timestamp"})
 public final class BitmexWalletTransaction {
 
   @JsonProperty("transactID")
@@ -52,7 +40,6 @@ public final class BitmexWalletTransaction {
   private String timestamp;
   @JsonIgnore
   private Map<String, Object> additionalProperties = new HashMap<>();
-
 
   public String getTransactID() {
     return transactID;
@@ -104,23 +91,5 @@ public final class BitmexWalletTransaction {
 
   public Map<String, Object> getAdditionalProperties() {
     return additionalProperties;
-  }
-
-  @Override
-  public String toString() {
-    return "BitmexWalletTransaction{" +
-        "transactID='" + transactID + '\'' +
-        ", account=" + account +
-        ", currency='" + currency + '\'' +
-        ", transactType='" + transactType + '\'' +
-        ", amount=" + amount +
-        ", fee=" + fee +
-        ", transactStatus='" + transactStatus + '\'' +
-        ", address='" + address + '\'' +
-        ", tx='" + tx + '\'' +
-        ", text='" + text + '\'' +
-        ", transactTime='" + transactTime + '\'' +
-        ", timestamp='" + timestamp + '\'' +
-        '}';
   }
 }
