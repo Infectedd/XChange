@@ -52,11 +52,6 @@ public class CryptopiaTradeService extends CryptopiaTradeServiceRaw implements T
   public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
     return submitTrade(limitOrder.getCurrencyPair(), limitOrder.getType(), limitOrder.getLimitPrice(), limitOrder.getOriginalAmount());
   }
-  
-  @Override
-  public String placeStopOrder(StopOrder stopOrder) throws IOException {
-    throw new NotYetImplementedForExchangeException();
-  }
 
   @Override
   public String placeStopOrder(StopOrder stopOrder) throws IOException {
