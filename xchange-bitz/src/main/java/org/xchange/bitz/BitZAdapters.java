@@ -43,7 +43,7 @@ public class BitZAdapters {
 
   public static Trade adaptTrade(BitZPublicTrade trade, CurrencyPair pair) {
     return new Trade.Builder().currencyPair(pair).id(String.valueOf(trade.hashCode())).price(trade.getPrice()).originalAmount(trade.getVolume())
-                              .build();
+        .build();
   }
 
   public static Trades adaptTrades(BitZTrades bitZTrades, CurrencyPair pair) {
@@ -57,11 +57,11 @@ public class BitZAdapters {
     List<LimitOrder> bids = new ArrayList<LimitOrder>();
 
     for (BitZPublicOrder order : bitZOrders.getAsks()) {
-      asks.add(new LimitOrder.Builder(OrderType.ASK, currencyPair).averagePrice(order.getPrice()).originalAmount(order.getVolume()).build());
+      asks.add(new LimitOrder.Builder(OrderType.ASK, currencyPair).limitPrice(order.getPrice()).originalAmount(order.getVolume()).build());
     }
 
     for (BitZPublicOrder order : bitZOrders.getBids()) {
-      bids.add(new LimitOrder.Builder(OrderType.BID, currencyPair).averagePrice(order.getPrice()).originalAmount(order.getVolume()).build());
+      bids.add(new LimitOrder.Builder(OrderType.BID, currencyPair).limitPrice(order.getPrice()).originalAmount(order.getVolume()).build());
     }
 
     return new OrderBook(timestamp, asks, bids);
