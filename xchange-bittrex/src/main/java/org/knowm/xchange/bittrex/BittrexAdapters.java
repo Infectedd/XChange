@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -230,10 +231,11 @@ public final class BittrexAdapters {
 
     Map<CurrencyPair, CurrencyPairMetaData> pairsMap = metaData.getCurrencyPairs();
     Map<Currency, CurrencyMetaData> currenciesMap = metaData.getCurrencies();
+    
     for (CurrencyPair c : currencyPairs) {
-      if (!pairsMap.containsKey(c)) {
-        pairsMap.put(c, null);
-      }
+    	pairsMap.put(new CurrencyPair(c.counter,c.base), pairsMap.get(c));
+    	pairsMap.remove(c);
+
       if (!currenciesMap.containsKey(c.base)) {
         currenciesMap.put(c.base, null);
       }
