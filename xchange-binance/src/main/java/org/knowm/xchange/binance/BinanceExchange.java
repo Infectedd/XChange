@@ -99,6 +99,9 @@ public class BinanceExchange extends BaseExchange {
             minNotional = ((BinanceCurrencyPairMetaData) pairMetaData).getMinNotional();
           }
         }
+        
+        if(tradingFee.compareTo(BigDecimal.ZERO) == 0)
+        	tradingFee = (new BigDecimal(1).movePointLeft(3));
 
         for (Filter filter : symbol.getFilters()) { // replace with the new values where available.
           switch (filter.getFilterType()) {
