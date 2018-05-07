@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
-import org.knowm.xchange.dto.trade.StopOrder;
 import org.knowm.xchange.dto.trade.UserTrades;
-import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.hitbtc.v2.HitbtcAdapters;
 import org.knowm.xchange.hitbtc.v2.dto.HitbtcOrder;
 import org.knowm.xchange.hitbtc.v2.dto.HitbtcOwnTrade;
@@ -55,11 +52,6 @@ public class HitbtcTradeService extends HitbtcTradeServiceRaw implements TradeSe
   }
 
   @Override
-  public String placeStopOrder(StopOrder stopOrder) throws IOException {
-    throw new NotYetImplementedForExchangeException();
-  }
-
-  @Override
   public boolean cancelOrder(String orderId) throws IOException {
     HitbtcOrder cancelOrderRaw = cancelOrderRaw(orderId);
     return "canceled".equals(cancelOrderRaw.status);
@@ -74,13 +66,11 @@ public class HitbtcTradeService extends HitbtcTradeServiceRaw implements TradeSe
     }
   }
 
-  /**
-   * Required parameters: {@link TradeHistoryParamPaging} {@link TradeHistoryParamCurrencyPair}
-   */
+  /** Required parameters: {@link TradeHistoryParamPaging} {@link TradeHistoryParamCurrencyPair} */
   @Override
   public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
 
-    long limit = 1000;
+    Integer limit = 1000;
     long offset = 0;
 
     if (params instanceof TradeHistoryParamLimit) {
@@ -122,22 +112,9 @@ public class HitbtcTradeService extends HitbtcTradeServiceRaw implements TradeSe
     for (String orderId : orderIds) {
       HitbtcOrder rawOrder = getHitbtcOrder("BTCUSD", orderId);
 
-      if (rawOrder != null)
-        orders.add(HitbtcAdapters.adaptOrder(rawOrder));
+      if (rawOrder != null) orders.add(HitbtcAdapters.adaptOrder(rawOrder));
     }
 
     return orders;
-  }
-
-  @Override
-  public void verifyOrder(LimitOrder limitOrder) {
-
-    throw new NotYetImplementedForExchangeException();
-  }
-
-  @Override
-  public void verifyOrder(MarketOrder marketOrder) {
-
-    throw new NotYetImplementedForExchangeException();
   }
 }

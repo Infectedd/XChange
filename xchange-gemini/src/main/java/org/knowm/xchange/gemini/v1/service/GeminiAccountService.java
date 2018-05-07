@@ -2,14 +2,10 @@ package org.knowm.xchange.gemini.v1.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
-
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
-import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
-import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.gemini.v1.GeminiAdapters;
 import org.knowm.xchange.gemini.v1.dto.account.GeminiDepositAddressResponse;
 import org.knowm.xchange.service.account.AccountService;
@@ -45,7 +41,8 @@ public class GeminiAccountService extends GeminiAccountServiceRaw implements Acc
    * @throws IOException
    */
   @Override
-  public String withdrawFunds(Currency currency, BigDecimal amount, String address) throws IOException {
+  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+      throws IOException {
     return withdraw(currency, amount, address);
   }
 
@@ -53,14 +50,13 @@ public class GeminiAccountService extends GeminiAccountServiceRaw implements Acc
   public String withdrawFunds(WithdrawFundsParams params) throws IOException {
     if (params instanceof DefaultWithdrawFundsParams) {
       DefaultWithdrawFundsParams defaultParams = (DefaultWithdrawFundsParams) params;
-      return withdrawFunds(defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
+      return withdrawFunds(
+          defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
     }
     throw new IllegalStateException("Don't know how to withdraw: " + params);
   }
 
-  /**
-   * This will result in a new address being created each time, and is severely rate-limited
-   */
+  /** This will result in a new address being created each time, and is severely rate-limited */
   @Override
   public String requestDepositAddress(Currency currency, String... arguments) throws IOException {
     GeminiDepositAddressResponse response = super.requestDepositAddressRaw(currency);
@@ -70,10 +66,5 @@ public class GeminiAccountService extends GeminiAccountServiceRaw implements Acc
   @Override
   public TradeHistoryParams createFundingHistoryParams() {
     throw new NotAvailableFromExchangeException();
-  }
-
-  @Override
-  public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
-    throw new NotYetImplementedForExchangeException();
   }
 }
