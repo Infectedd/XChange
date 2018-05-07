@@ -69,7 +69,12 @@ public class HitbtcExchange extends BaseExchange implements org.knowm.xchange.Ex
     hitbtcMetaData = loadMetaData(is, HitbtcMetaData.class);
     exchangeMetaData =
         HitbtcAdapters.adaptToExchangeMetaData(
-            null, hitbtcMetaData.getCurrencies(), hitbtcMetaData.getCurrencyPairs());
+            null,
+            hitbtcMetaData.getCurrencies(),
+            hitbtcMetaData.getCurrencyPairs(),
+            hitbtcMetaData.getPrivateRateLimits(),
+            hitbtcMetaData.getPublicRateLimits(),
+            hitbtcMetaData.isShareRateLimits());
   }
 
   @Override
@@ -100,6 +105,11 @@ public class HitbtcExchange extends BaseExchange implements org.knowm.xchange.Ex
         ((HitbtcMarketDataServiceRaw) marketDataService).getHitbtcSymbols();
     exchangeMetaData =
         HitbtcAdapters.adaptToExchangeMetaData(
-            hitbtcSymbols, hitbtcMetaData.getCurrencies(), hitbtcMetaData.getCurrencyPairs());
+            hitbtcSymbols,
+            hitbtcMetaData.getCurrencies(),
+            hitbtcMetaData.getCurrencyPairs(),
+            hitbtcMetaData.getPrivateRateLimits(),
+            hitbtcMetaData.getPublicRateLimits(),
+            hitbtcMetaData.isShareRateLimits());
   }
 }

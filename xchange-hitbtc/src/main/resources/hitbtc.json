@@ -108,5 +108,17 @@
       "scale": 8,
       "withdrawal_fee": 0.01
     }
-  }
+  },
+   "public_rate_limits" : [ {
+    "calls" : 100,
+    "time_span" : 1,
+    "time_unit" : "SECONDS"
+  } ],
+  "private_rate_limits" : [ {
+    "calls" : 100,
+    "time_span" : 1,
+    "time_unit" : "SECONDS"
+  } ],
+  "share_rate_limits" : true,
+  "min_poll_delay" : 100
 }

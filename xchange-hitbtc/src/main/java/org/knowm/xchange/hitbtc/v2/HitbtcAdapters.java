@@ -1,5 +1,13 @@
 package org.knowm.xchange.hitbtc.v2;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -15,6 +23,7 @@ import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.CurrencyPairMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
+import org.knowm.xchange.dto.meta.RateLimit;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
 import org.knowm.xchange.dto.trade.UserTrade;
@@ -29,19 +38,6 @@ import org.knowm.xchange.hitbtc.v2.dto.HitbtcSymbol;
 import org.knowm.xchange.hitbtc.v2.dto.HitbtcTicker;
 import org.knowm.xchange.hitbtc.v2.dto.HitbtcTrade;
 import org.knowm.xchange.hitbtc.v2.dto.HitbtcTransaction;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class HitbtcAdapters {
 
@@ -261,7 +257,10 @@ public class HitbtcAdapters {
   public static ExchangeMetaData adaptToExchangeMetaData(
       List<HitbtcSymbol> symbols,
       Map<Currency, CurrencyMetaData> currencies,
-      Map<CurrencyPair, CurrencyPairMetaData> currencyPairs) {
+      Map<CurrencyPair, CurrencyPairMetaData> currencyPairs,
+      RateLimit[] privateRateLimits,
+      RateLimit[] publicRateLimits,
+      boolean shareRateLimits) {
     if (symbols != null) {
       for (HitbtcSymbol symbol : symbols) {
         CurrencyPair pair = adaptSymbol(symbol);
@@ -286,7 +285,8 @@ public class HitbtcAdapters {
       }
     }
 
-    return new ExchangeMetaData(currencyPairs, currencies, null, null, null);
+    return new ExchangeMetaData(
+        currencyPairs, currencies, privateRateLimits, publicRateLimits, shareRateLimits);
   }
 
   public static FundingRecord adapt(HitbtcTransaction transaction) {
