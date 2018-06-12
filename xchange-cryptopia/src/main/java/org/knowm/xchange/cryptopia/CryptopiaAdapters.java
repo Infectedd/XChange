@@ -1,10 +1,12 @@
 package org.knowm.xchange.cryptopia;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.knowm.xchange.cryptopia.dto.marketdata.CryptopiaCurrency;
 import org.knowm.xchange.cryptopia.dto.marketdata.CryptopiaMarketHistory;
 import org.knowm.xchange.cryptopia.dto.marketdata.CryptopiaOrder;
@@ -138,7 +140,7 @@ public final class CryptopiaAdapters {
     for (CryptopiaTradePair cryptopiaTradePair : tradePairs) {
       if(!cryptopiaTradePair.getStatus().equals("OK")) continue;
       CurrencyPair currencyPair = CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaTradePair.getLabel());
-      CurrencyPairMetaData currencyPairMetaData = new CurrencyPairMetaData(cryptopiaTradePair.getTradeFee(), cryptopiaTradePair.getMinimumTrade(),
+      CurrencyPairMetaData currencyPairMetaData = new CurrencyPairMetaData(cryptopiaTradePair.getTradeFee().divide(new BigDecimal("100")), cryptopiaTradePair.getMinimumTrade(),
           cryptopiaTradePair.getMaximumTrade(), 8);
 
       marketMetaDataMap.put(currencyPair, currencyPairMetaData);
