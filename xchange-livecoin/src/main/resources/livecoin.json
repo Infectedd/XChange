@@ -360,5 +360,17 @@
     "VRC": {},
     "SXC": {}
   },
-  "share_rate_limits": true
+  "share_rate_limits": true,
+  "public_rate_limits": [
+		{
+			"calls": 1,
+			"time_span": 1,
+			"time_unit": "SECONDS"
+		},
+        {
+        	"calls": 40,
+			"time_span": 80,
+			"time_unit": "SECONDS"
+        }
+	]
 }
