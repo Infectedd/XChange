@@ -2,8 +2,8 @@ package org.knowm.xchange.bitmex.service;
 
 import java.io.IOException;
 import java.util.*;
-import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitmex.BitmexAdapters;
+import org.knowm.xchange.bitmex.BitmexExchange;
 import org.knowm.xchange.bitmex.dto.marketdata.BitmexPrivateOrder;
 import org.knowm.xchange.bitmex.dto.trade.BitmexSide;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -22,7 +22,7 @@ public class BitmexTradeService extends BitmexTradeServiceRaw implements TradeSe
    *
    * @param exchange
    */
-  public BitmexTradeService(Exchange exchange) {
+  public BitmexTradeService(BitmexExchange exchange) {
 
     super(exchange);
   }
@@ -147,8 +147,8 @@ public class BitmexTradeService extends BitmexTradeServiceRaw implements TradeSe
               privateOrder.getId(),
               privateOrder.getTimestamp(),
               privateOrder.getPrice(),
-              null,
-              null,
+              privateOrder.getAvgPx(),
+              privateOrder.getCumQty(),
               null,
               status));
     }

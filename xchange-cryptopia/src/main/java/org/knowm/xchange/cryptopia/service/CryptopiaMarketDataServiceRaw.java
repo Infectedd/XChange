@@ -12,7 +12,6 @@ import org.knowm.xchange.cryptopia.dto.marketdata.CryptopiaTicker;
 import org.knowm.xchange.cryptopia.dto.marketdata.CryptopiaTradePair;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.exceptions.ExchangeException;
 
 public class CryptopiaMarketDataServiceRaw extends CryptopiaBaseService {
 
@@ -23,31 +22,16 @@ public class CryptopiaMarketDataServiceRaw extends CryptopiaBaseService {
 
   public List<CryptopiaCurrency> getCryptopiaCurrencies() throws IOException {
     CryptopiaBaseResponse<List<CryptopiaCurrency>> response = cryptopia.getCurrencies();
-
-    if (response.getError() != null) {
-      throw new ExchangeException(response.getError());
-    }
-
     return response.getData();
   }
 
   public List<CryptopiaTradePair> getCryptopiaTradePairs() throws IOException {
     CryptopiaBaseResponse<List<CryptopiaTradePair>> response = cryptopia.getTradePairs();
-
-    if (response.getError() != null) {
-      throw new ExchangeException(response.getError());
-    }
-
     return response.getData();
   }
 
   public List<CryptopiaTicker> getCryptopiaMarkets() throws IOException {
     CryptopiaBaseResponse<List<CryptopiaTicker>> response = cryptopia.getMarkets();
-
-    if (response.getError() != null) {
-      throw new ExchangeException(response.getError());
-    }
-
     return response.getData();
   }
 
@@ -85,11 +69,6 @@ public class CryptopiaMarketDataServiceRaw extends CryptopiaBaseService {
 
   public CryptopiaTicker getCryptopiaTicker(CurrencyPair market, long hours) throws IOException {
     CryptopiaBaseResponse<CryptopiaTicker> response = cryptopia.getMarket(getPair(market), hours);
-
-    if (response.getError() != null) {
-      throw new ExchangeException(response.getError());
-    }
-
     return response.getData();
   }
 
@@ -115,11 +94,6 @@ public class CryptopiaMarketDataServiceRaw extends CryptopiaBaseService {
 
   public CryptopiaOrderBook getCryptopiaOrderBook(CurrencyPair market) throws IOException {
     CryptopiaBaseResponse<CryptopiaOrderBook> response = cryptopia.getMarketOrders(getPair(market));
-
-    if (response.getError() != null) {
-      throw new ExchangeException(response.getError());
-    }
-
     return response.getData();
   }
 
