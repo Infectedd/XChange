@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
+
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -123,7 +124,9 @@ public class LivecoinAdapters {
 
       if (!currencies.containsKey(pair.counter)) currencies.put(pair.counter, null);
     }
-    return new ExchangeMetaData(currencyPairs, currencies, null, null, true);
+		return new ExchangeMetaData(currencyPairs, currencies, exchangeMetaData.getPublicRateLimits(), exchangeMetaData
+																														.getPrivateRateLimits(),
+									exchangeMetaData.isShareRateLimits());
   }
 
   public static Trades adaptTrades(List<LivecoinTrade> tradesRaw, CurrencyPair currencyPair) {
