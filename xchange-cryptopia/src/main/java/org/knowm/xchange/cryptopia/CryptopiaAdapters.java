@@ -31,7 +31,8 @@ import org.knowm.xchange.utils.jackson.CurrencyPairDeserializer;
 public final class CryptopiaAdapters {
   private static final String TIMEZONE = "UTC";
 
-  private CryptopiaAdapters() {}
+  private CryptopiaAdapters() {
+  }
 
   public static Date convertTimestamp(String timestamp) {
 
@@ -49,18 +50,14 @@ public final class CryptopiaAdapters {
    * @param currencyPair (e.g. BTC/USD)
    * @return The XChange OrderBook
    */
-  public static OrderBook adaptOrderBook(
-      CryptopiaOrderBook cryptopiaOrderBook, CurrencyPair currencyPair) {
-    List<LimitOrder> asks =
-        createOrders(currencyPair, Order.OrderType.ASK, cryptopiaOrderBook.getAsks());
-    List<LimitOrder> bids =
-        createOrders(currencyPair, Order.OrderType.BID, cryptopiaOrderBook.getBids());
+  public static OrderBook adaptOrderBook(CryptopiaOrderBook cryptopiaOrderBook, CurrencyPair currencyPair) {
+    List<LimitOrder> asks = createOrders(currencyPair, Order.OrderType.ASK, cryptopiaOrderBook.getAsks());
+    List<LimitOrder> bids = createOrders(currencyPair, Order.OrderType.BID, cryptopiaOrderBook.getBids());
 
     return new OrderBook(new Date(), asks, bids);
   }
 
-  private static List<LimitOrder> createOrders(
-      CurrencyPair currencyPair, Order.OrderType orderType, List<CryptopiaOrder> orders) {
+  private static List<LimitOrder> createOrders(CurrencyPair currencyPair, Order.OrderType orderType, List<CryptopiaOrder> orders) {
     List<LimitOrder> limitOrders = new ArrayList<>();
 
     for (CryptopiaOrder cryptopiaOrder : orders) {
@@ -70,10 +67,8 @@ public final class CryptopiaAdapters {
     return limitOrders;
   }
 
-  private static LimitOrder createOrder(
-      CurrencyPair currencyPair, CryptopiaOrder cryptopiaOrder, Order.OrderType orderType) {
-    return new LimitOrder(
-        orderType, cryptopiaOrder.getVolume(), currencyPair, "", null, cryptopiaOrder.getPrice());
+  private static LimitOrder createOrder(CurrencyPair currencyPair, CryptopiaOrder cryptopiaOrder, Order.OrderType orderType) {
+    return new LimitOrder(orderType, cryptopiaOrder.getVolume(), currencyPair, "", null, cryptopiaOrder.getPrice());
   }
 
   /**
@@ -84,16 +79,8 @@ public final class CryptopiaAdapters {
    * @return The XChange ticker
    */
   public static Ticker adaptTicker(CryptopiaTicker cryptopiaTicker, CurrencyPair currencyPair) {
-    return new Ticker.Builder()
-        .currencyPair(currencyPair)
-        .last(cryptopiaTicker.getLast())
-        .bid(cryptopiaTicker.getBid())
-        .ask(cryptopiaTicker.getAsk())
-        .high(cryptopiaTicker.getHigh())
-        .low(cryptopiaTicker.getLow())
-        .volume(cryptopiaTicker.getVolume())
-        .timestamp(new Date())
-        .build();
+    return new Ticker.Builder().currencyPair(currencyPair).last(cryptopiaTicker.getLast()).bid(cryptopiaTicker.getBid()).ask(cryptopiaTicker.getAsk())
+        .high(cryptopiaTicker.getHigh()).low(cryptopiaTicker.getLow()).volume(cryptopiaTicker.getVolume()).timestamp(new Date()).build();
   }
 
   public static Trades adaptTrades(List<CryptopiaMarketHistory> cryptopiaMarketHistory) {
@@ -114,22 +101,16 @@ public final class CryptopiaAdapters {
   }
 
   private static Trade adaptTrade(CryptopiaMarketHistory cryptopiaMarketHistory) {
-    Order.OrderType orderType =
-        "Buy".equals(cryptopiaMarketHistory.getType()) ? Order.OrderType.BID : Order.OrderType.ASK;
+    Order.OrderType orderType = "Buy".equals(cryptopiaMarketHistory.getType()) ? Order.OrderType.BID : Order.OrderType.ASK;
     String tradeTimestamp = String.valueOf(cryptopiaMarketHistory.getTimestamp());
     Date date = DateUtils.fromMillisUtc(cryptopiaMarketHistory.getTimestamp() * 1000L);
 
-    return new Trade(
-        orderType,
-        cryptopiaMarketHistory.getAmount(),
-        CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaMarketHistory.getLabel()),
-        cryptopiaMarketHistory.getPrice(),
-        date,
+    return new Trade(orderType, cryptopiaMarketHistory.getAmount(),
+        CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaMarketHistory.getLabel()), cryptopiaMarketHistory.getPrice(), date,
         tradeTimestamp);
   }
 
-  public static ExchangeMetaData adaptToExchangeMetaData(
-      List<CryptopiaCurrency> cryptopiaCurrencies, List<CryptopiaTradePair> tradePairs) {
+  public static ExchangeMetaData adaptToExchangeMetaData(List<CryptopiaCurrency> cryptopiaCurrencies, List<CryptopiaTradePair> tradePairs) {
     Map<CurrencyPair, CurrencyPairMetaData> marketMetaDataMap = new HashMap<>();
     Map<Currency, CurrencyMetaData> currencyMetaDataMap = new HashMap<>();
 
@@ -138,10 +119,11 @@ public final class CryptopiaAdapters {
     }
 
     for (CryptopiaTradePair cryptopiaTradePair : tradePairs) {
-      if(!cryptopiaTradePair.getStatus().equals("OK")) continue;
+      if (!cryptopiaTradePair.getStatus().equals("OK"))
+        continue;
       CurrencyPair currencyPair = CurrencyPairDeserializer.getCurrencyPairFromString(cryptopiaTradePair.getLabel());
-      CurrencyPairMetaData currencyPairMetaData = new CurrencyPairMetaData(cryptopiaTradePair.getTradeFee().divide(new BigDecimal("100")), cryptopiaTradePair.getMinimumTrade(),
-          cryptopiaTradePair.getMaximumTrade(), 8);
+      CurrencyPairMetaData currencyPairMetaData = new CurrencyPairMetaData(cryptopiaTradePair.getTradeFee().divide(new BigDecimal("100")),
+          cryptopiaTradePair.getMinimumBaseTrade(), cryptopiaTradePair.getMaximumBaseTrade(), 8);
 
       marketMetaDataMap.put(currencyPair, currencyPairMetaData);
     }
